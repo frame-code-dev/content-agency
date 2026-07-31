@@ -47,4 +47,31 @@ class AnalysisController extends Controller
             return redirect()->route('dashboard')->with('error', $e->getMessage());
         }
     }
+
+    public function analyzePortfolio(Request $request)
+    {
+        $user = auth()->user();
+        $account = $user ? $user->instagramAccount : null;
+
+        $posts = [];
+        if ($account && $account->posts()->count() > 0) {
+            $posts = $account->posts()->orderBy('posted_at', 'desc')->get()->map(function ($p) {
+                return [
+                    'id' => $p->instagram_post_id,
+                    'caption' => $p->caption,
+                    'media_type' => $p->media_type,
+                    'media_url' => $p->media_url,
+                    'like_count' => $p->like_count,
+                    'comments_count' => $p->comments_count,
+                    'posted_at' => $p->posted_at,
+                ];
+            })->toArray();
+        } else {
+            $posts = app(\App\Services\InstagramService::class)->getMockPosts();
+        }
+
+        $portfolioAnalysis = $this->aiService->analyzePortfolioContent($posts, $account);
+
+        return view('portfolio_analysis', compact('user', 'account', 'posts', 'portfolioAnalysis'));
+    }
 }

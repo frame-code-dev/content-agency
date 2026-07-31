@@ -51,8 +51,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/auth/instagram/sync', [InstagramController::class, 'sync'])->name('instagram.sync');
     Route::post('/auth/instagram/disconnect', [InstagramController::class, 'disconnect'])->name('instagram.disconnect');
 
-    // AI Analysis
+    // AI Analysis (Single Post & Overall Portfolio Audit)
     Route::post('/analysis', [AnalysisController::class, 'analyze'])->name('analysis.process');
+    Route::post('/analysis/portfolio', [AnalysisController::class, 'analyzePortfolio'])->name('analysis.portfolio');
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings');

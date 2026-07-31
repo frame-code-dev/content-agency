@@ -460,7 +460,15 @@
                         <h3 class="text-base font-bold font-heading text-slate-900">Recent Content Assets & AI Audit</h3>
                         <p class="text-xs text-slate-500 mt-0.5">Real assets fetched from database and Meta Graph API.</p>
                     </div>
-                    <span class="text-xs font-semibold text-slate-400 font-mono">{{ count($posts) }} Posts Available</span>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-xs font-semibold text-slate-400 font-mono">{{ count($posts) }} Posts Available</span>
+                        <form action="{{ route('analysis.portfolio') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[#A3E635] text-xs font-bold rounded-xl shadow transition flex items-center space-x-1.5">
+                                <span>⚡ Audit Keseluruhan Post</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
