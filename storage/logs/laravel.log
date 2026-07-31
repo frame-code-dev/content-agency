@@ -6739,3 +6739,31 @@ DETAIL:  Key (user_id)=(1) is not present in table \"users\". at /var/www/vendor
 [2026-07-31 08:25:09] local.WARNING: Instagram token refresh failed {"error":{"message":"Invalid OAuth access token - Cannot parse access token","type":"OAuthException","code":190,"fbtrace_id":"Ax52QHzPZd84sOKQFRxjo4g"}} 
 [2026-07-31 08:25:24] local.WARNING: Instagram token refresh failed {"error":{"message":"Invalid OAuth access token - Cannot parse access token","type":"OAuthException","code":190,"fbtrace_id":"ANBwC00ws40HDeuHNq1hwwM"}} 
 [2026-07-31 08:25:30] local.WARNING: Instagram token refresh failed {"error":{"message":"Invalid OAuth access token - Cannot parse access token","type":"OAuthException","code":190,"fbtrace_id":"AZl1DxfiU6hui8zdQME5-2F"}} 
+[2026-07-31 19:53:23] local.ERROR: Uncaught Error: Call to undefined function Illuminate\Support\mb_split() in /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php:1722
+Stack trace:
+#0 /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php(232): Illuminate\Support\Str::studly()
+#1 Command line code(1): Illuminate\Support\Str::camel()
+#2 {main}
+  thrown {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Uncaught Error: Call to undefined function Illuminate\\Support\\mb_split() in /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php:1722
+Stack trace:
+#0 /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php(232): Illuminate\\Support\\Str::studly()
+#1 Command line code(1): Illuminate\\Support\\Str::camel()
+#2 {main}
+  thrown at /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php:1722)
+[stacktrace]
+#0 {main}
+"} 
+[2026-07-31 19:53:31] local.ERROR: Uncaught Error: Call to undefined function Illuminate\Support\mb_split() in /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php:1722
+Stack trace:
+#0 /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php(232): Illuminate\Support\Str::studly()
+#1 Command line code(1): Illuminate\Support\Str::camel()
+#2 {main}
+  thrown {"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Uncaught Error: Call to undefined function Illuminate\\Support\\mb_split() in /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php:1722
+Stack trace:
+#0 /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php(232): Illuminate\\Support\\Str::studly()
+#1 Command line code(1): Illuminate\\Support\\Str::camel()
+#2 {main}
+  thrown at /home/whoami/workspace/ai-content-agency/vendor/laravel/framework/src/Illuminate/Support/Str.php:1722)
+[stacktrace]
+#0 {main}
+"} 

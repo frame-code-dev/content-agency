@@ -46,6 +46,8 @@ class DatabaseSeeder extends Seeder
             [
                 'instagram_account_id' => '17841400000000001',
                 'username'             => 'isabella.white',
+                'name'                 => 'Isabella White',
+                'profile_picture_url'  => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
                 'access_token'         => 'mock_access_token_demo_mode',
                 'token_expires_at'     => now()->addDays(60),
             ]
@@ -57,6 +59,8 @@ class DatabaseSeeder extends Seeder
             [
                 'instagram_account_id' => '17841400000000002',
                 'username'             => 'isabella.white',
+                'name'                 => 'Isabella White',
+                'profile_picture_url'  => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
                 'access_token'         => 'mock_access_token_demo_mode',
                 'token_expires_at'     => now()->addDays(60),
             ]

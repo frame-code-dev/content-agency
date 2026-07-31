@@ -39,6 +39,6 @@ class InstagramTest extends TestCase
         // 4. Assert dashboard loads posts for authenticated user
         $dashboard = $this->actingAs($user)->get(route('dashboard'));
         $dashboard->assertStatus(200);
-        $dashboard->assertSee('agency_demo_studio');
+        $dashboard->assertSee('isabella.white');
     }
 }

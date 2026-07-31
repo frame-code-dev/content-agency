@@ -4,7 +4,7 @@
         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold font-heading text-zinc-900 tracking-tight">Audience Insights</h1>
-                <p class="text-xs text-zinc-500 mt-1">Live Instagram demographics for @{{ $account->username ?? 'account' }} from Meta Graph API.</p>
+                <p class="text-xs text-zinc-500 mt-1">Live Instagram demographics for {{ '@' . ($account->username ?? 'account') }} from Meta Graph API.</p>
             </div>
         </div>
 

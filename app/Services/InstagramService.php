@@ -79,7 +79,9 @@ class InstagramService
                 ['user_id' => $user->id],
                 [
                     'instagram_account_id' => '17841400000000001',
-                    'username'             => 'agency_demo_studio',
+                    'username'             => 'isabella.white',
+                    'name'                 => 'Isabella White',
+                    'profile_picture_url'  => 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
                     'access_token'         => 'mock_access_token_demo_mode',
                     'token_expires_at'     => now()->addDays(60),
                 ]
@@ -180,15 +182,20 @@ class InstagramService
             }
         }
 
-        // 5. Fetch Instagram username details for resolved ID
+        // 5. Fetch Instagram username & profile details for resolved ID
+        $name = null;
+        $profilePictureUrl = null;
+
         if ($instagramUserId) {
             $igInfoResponse = Http::get("https://graph.facebook.com/v19.0/{$instagramUserId}", [
-                'fields'       => 'id,username,name',
+                'fields'       => 'id,username,name,profile_picture_url',
                 'access_token' => $accessToken,
             ]);
             if ($igInfoResponse->successful()) {
                 $igData = $igInfoResponse->json();
                 $username = $igData['username'] ?? $igData['name'] ?? $username;
+                $name = $igData['name'] ?? $username;
+                $profilePictureUrl = $igData['profile_picture_url'] ?? null;
             }
         }
 
@@ -202,6 +209,7 @@ class InstagramService
             $meData = $meResponse->successful() ? $meResponse->json() : [];
             $instagramUserId = $meData['id'] ?? ('ig_' . time());
             $username = $meData['name'] ?? "user_{$instagramUserId}";
+            $name = $username;
         }
 
         // 6. Simpan / update akun Instagram Professional & Long-Lived Token di DB
@@ -210,6 +218,8 @@ class InstagramService
             [
                 'instagram_account_id' => (string)$instagramUserId,
                 'username'             => $username,
+                'name'                 => $name ?? $username,
+                'profile_picture_url'  => $profilePictureUrl,
                 'access_token'         => $accessToken,
                 'token_expires_at'     => now()->addSeconds($expiresIn),
             ]
@@ -302,9 +312,19 @@ class InstagramService
             $followsCount = $profileInfo['follows_count'] ?? 0;
             $mediaCount = $profileInfo['media_count'] ?? $mediaCount;
 
-            // Automatically update DB username if Meta Graph API returns an Instagram handle
+            // Automatically update DB profile details if Meta Graph API returns updated info
+            $updateData = [];
             if (!empty($profileInfo['username']) && $account->username !== $profileInfo['username']) {
-                $account->update(['username' => $profileInfo['username']]);
+                $updateData['username'] = $profileInfo['username'];
+            }
+            if (!empty($profileInfo['name']) && $account->name !== $profileInfo['name']) {
+                $updateData['name'] = $profileInfo['name'];
+            }
+            if (!empty($profileInfo['profile_picture_url']) && $account->profile_picture_url !== $profileInfo['profile_picture_url']) {
+                $updateData['profile_picture_url'] = $profileInfo['profile_picture_url'];
+            }
+            if (!empty($updateData)) {
+                $account->update($updateData);
             }
         }
 

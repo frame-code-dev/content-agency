@@ -225,17 +225,22 @@
             <!-- Bottom User Profile Card -->
             <div class="p-4 border-t border-zinc-800/80 bg-zinc-950">
                 @php
-                    $userName = $currentUser->name ?? 'Cineart Client';
-                    $userEmail = $currentUser->email ?? 'client@agency.com';
+                    $displayName = $currentAccount->name ?? $currentAccount->username ?? $currentUser->name ?? 'Cineart Client';
+                    $displaySub = $currentAccount ? '@' . $currentAccount->username : ($currentUser->email ?? 'client@agency.com');
+                    $avatarUrl = $currentAccount->profile_picture_url ?? null;
                 @endphp
                 <div class="flex items-center justify-between p-2.5 rounded-[10px] bg-zinc-900 border border-zinc-800">
                     <div class="flex items-center space-x-3 truncate">
-                        <div class="w-8 h-8 rounded-[10px] bg-zinc-800 border border-zinc-700 flex items-center justify-center font-bold text-white text-xs">
-                            {{ strtoupper(substr($userName, 0, 1)) }}
-                        </div>
+                        @if(!empty($avatarUrl))
+                            <img src="{{ $avatarUrl }}" alt="{{ $displayName }}" class="w-8 h-8 rounded-[10px] object-cover border border-zinc-700">
+                        @else
+                            <div class="w-8 h-8 rounded-[10px] bg-zinc-800 border border-zinc-700 flex items-center justify-center font-bold text-white text-xs">
+                                {{ strtoupper(substr($displayName, 0, 1)) }}
+                            </div>
+                        @endif
                         <div class="truncate">
-                            <div class="text-xs font-bold text-white truncate">{{ $userName }}</div>
-                            <div class="text-[10px] text-zinc-400 truncate">{{ $userEmail }}</div>
+                            <div class="text-xs font-bold text-white truncate">{{ $displayName }}</div>
+                            <div class="text-[10px] text-zinc-400 truncate">{{ $displaySub }}</div>
                         </div>
                     </div>
                     @if(auth()->check())

@@ -58,7 +58,7 @@
                     <!-- Instagram Connection & Reconnect Status Badge -->
                     <div class="flex items-center space-x-2 bg-white border border-slate-200/80 px-3 py-1.5 rounded-2xl text-xs shadow-sm">
                         <span class="w-2 h-2 rounded-full {{ method_exists($account, 'isTokenExpired') && $account->isTokenExpired() ? 'bg-amber-500 animate-ping' : 'bg-emerald-500 animate-pulse' }}"></span>
-                        <span class="font-semibold text-slate-700 font-mono">@ {{ $account->username }}</span>
+                        <span class="font-semibold text-slate-700 font-mono">{{ '@' . ($account->username ?? 'account') }}</span>
                         
                         <!-- Reconnect Button -->
                         <a href="{{ route('instagram.connect') }}" title="Reconnect Instagram to refresh token" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold rounded-xl text-[11px] border border-emerald-200 transition">
@@ -91,10 +91,10 @@
 
                     <!-- Creator Profile Header Card -->
                     <div class="flex items-center space-x-4 bg-white border border-slate-200/80 p-3 px-5 rounded-2xl shadow-sm">
-                        <img class="w-11 h-11 rounded-full object-cover ring-2 ring-[#A3E635]" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar">
+                        <img class="w-11 h-11 rounded-full object-cover ring-2 ring-[#A3E635]" src="{{ $account->profile_picture_url ?? 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80' }}" alt="Avatar">
                         <div class="pr-4 border-r border-slate-200">
-                            <div class="text-sm font-bold text-slate-900 leading-tight">{{ $user->name ?? 'Isabella White' }}</div>
-                            <div class="text-[11px] text-emerald-600 font-semibold font-mono">@ {{ $account->username }}</div>
+                            <div class="text-sm font-bold text-slate-900 leading-tight">{{ $account->name ?? $account->username ?? $user->name ?? 'Cineart Client' }}</div>
+                            <div class="text-[11px] text-emerald-600 font-semibold font-mono">{{ '@' . ($account->username ?? 'account') }}</div>
                         </div>
                         <div class="flex items-center space-x-5 text-center pl-2">
                             <div>

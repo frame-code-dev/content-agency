@@ -14,6 +14,8 @@ class InstagramAccount extends Model
         'user_id',
         'instagram_account_id',
         'username',
+        'name',
+        'profile_picture_url',
         'access_token',
         'token_type',
         'token_expires_at',

@@ -13,6 +13,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('instagram_account_id')->unique();
             $table->string('username');
+            $table->string('name')->nullable();
+            $table->text('profile_picture_url')->nullable();
             $table->text('access_token');
             $table->string('token_type')->default('bearer');
             $table->timestamp('token_expires_at')->nullable();
