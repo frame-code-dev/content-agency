@@ -168,15 +168,28 @@ Aplikasi dapat diakses di `http://127.0.0.1:8000`.
 
 ---
 
-## 🔑 Konfigurasi Environment (`.env`)
+## 🔑 Konfigurasi Environment & AI Provider (`.env`)
+
+Aplikasi ini mendukung dua penyedia AI (**Google Gemini API** & **OpenAI API**). Anda dapat menggunakan **Google Gemini API** secara **gratis** dengan mendapatkan API Key di [Google AI Studio (aistudio.google.com)](https://aistudio.google.com).
 
 Pastikan variabel integrasi berikut dikonfigurasi di file `.env`:
 
 ```env
-# Integrasi OpenAI API (Untuk AI Analysis & Content Planner Generator)
+# ------------------------------------------------------------------------------
+# Konfigurasi AI Provider (Pilihan: 'gemini' atau 'openai')
+# ------------------------------------------------------------------------------
+AI_PROVIDER=gemini
+
+# Google Gemini API Key (Dapatkan gratis dari https://aistudio.google.com)
+GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-1.5-flash
+
+# OpenAI API Key (Opsional / Alternatif Provider)
 OPENAI_API_KEY=your_openai_api_key_here
 
+# ------------------------------------------------------------------------------
 # Integrasi Instagram Business (Meta Graph API)
+# ------------------------------------------------------------------------------
 INSTAGRAM_CLIENT_ID=your_instagram_app_id
 INSTAGRAM_CLIENT_SECRET=your_instagram_app_secret
 INSTAGRAM_REDIRECT_URI="${APP_URL}/auth/instagram/callback"

@@ -12,12 +12,55 @@ class ContentPlannerService
      */
     public function generateCopywriting(string $topic, string $concept = '', string $tone = 'professional', string $mediaType = 'IMAGE'): array
     {
-        $apiKey = config('services.openai.api_key', env('OPENAI_API_KEY'));
+        $provider = config('services.ai.provider', 'gemini');
+        $geminiKey = config('services.gemini.key');
+        $geminiModel = config('services.gemini.model', 'gemini-1.5-flash');
 
-        if ($apiKey && $apiKey !== 'mock') {
+        // 1. Try Google Gemini API if configured
+        if (($provider === 'gemini' || !config('services.openai.key')) && $geminiKey && $geminiKey !== 'mock') {
+            try {
+                $url = "https://generativelanguage.googleapis.com/v1beta/models/{$geminiModel}:generateContent?key={$geminiKey}";
+                $response = Http::withHeaders([
+                    'Content-Type' => 'application/json',
+                ])->timeout(15)->post($url, [
+                    'systemInstruction' => [
+                        'parts' => [
+                            ['text' => "You are an expert social media copywriter for an agency. Produce 3 caption options (Option A, B, C) in Indonesian with appropriate emojis, hooks, and hashtags for the topic."]
+                        ]
+                    ],
+                    'contents' => [
+                        [
+                            'role' => 'user',
+                            'parts' => [
+                                ['text' => "Topic: {$topic}. Concept: {$concept}. Tone: {$tone}. Media Type: {$mediaType}."]
+                            ]
+                        ]
+                    ],
+                    'generationConfig' => [
+                        'temperature' => 0.7,
+                    ]
+                ]);
+
+                if ($response->successful()) {
+                    $aiText = $response->json()['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                    if (!empty($aiText)) {
+                        return [
+                            'caption' => $aiText,
+                            'source'  => 'Google Gemini (' . $geminiModel . ')',
+                        ];
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::warning("Gemini API call failed: " . $e->getMessage());
+            }
+        }
+
+        // 2. Try OpenAI API if configured
+        $openAiKey = config('services.openai.key', env('OPENAI_API_KEY'));
+        if ($openAiKey && $openAiKey !== 'mock') {
             try {
                 $response = Http::withHeaders([
-                    'Authorization' => 'Bearer ' . $apiKey,
+                    'Authorization' => 'Bearer ' . $openAiKey,
                     'Content-Type'  => 'application/json',
                 ])->timeout(15)->post('https://api.openai.com/v1/chat/completions', [
                     'model' => 'gpt-3.5-turbo',
