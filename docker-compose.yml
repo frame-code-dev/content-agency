@@ -1,0 +1,56 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ai_content_agency_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+    networks:
+      - agency_network
+    environment:
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: ai_content_agency
+      DB_USERNAME: agency_user
+      DB_PASSWORD: agency_password
+
+  webserver:
+    image: nginx:alpine
+    container_name: ai_content_agency_webserver
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - agency_network
+    depends_on:
+      - app
+
+  db:
+    image: postgres:16-alpine
+    container_name: ai_content_agency_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ai_content_agency
+      POSTGRES_USER: agency_user
+      POSTGRES_PASSWORD: agency_password
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - agency_network
+
+networks:
+  agency_network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
