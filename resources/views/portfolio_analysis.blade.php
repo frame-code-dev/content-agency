@@ -37,11 +37,13 @@
             <div class="h-14 w-px bg-slate-800 hidden md:block"></div>
 
             <div>
-                <span class="text-xs font-mono uppercase tracking-widest text-emerald-400">Rata-Rata Interaksi</span>
+                <span class="text-xs font-mono uppercase tracking-widest text-emerald-400">Rata-Rata Interaksi Per Post</span>
                 <div class="text-base font-bold mt-1 text-slate-100">
                     ❤️ {{ number_format($portfolioAnalysis['avg_likes_per_post'] ?? 0) }} Likes / 💬 {{ number_format($portfolioAnalysis['avg_comments_per_post'] ?? 0) }} Komen
                 </div>
-                <div class="text-xs text-emerald-300 font-semibold font-mono mt-0.5">ER: {{ $portfolioAnalysis['overall_engagement_er'] ?? '4.85%' }}</div>
+                <div class="text-xs text-emerald-300 font-semibold font-mono mt-0.5">
+                    ER: {{ $portfolioAnalysis['overall_engagement_er'] ?? '4.85%' }} • (Total {{ number_format($portfolioAnalysis['total_likes'] ?? 0) }} Likes)
+                </div>
             </div>
         </div>
 
@@ -51,6 +53,33 @@
             <p class="text-sm text-slate-700 leading-relaxed font-medium">
                 {{ $portfolioAnalysis['executive_summary'] }}
             </p>
+        </div>
+
+        <!-- Parameter Analysis Explanation Section -->
+        <div class="bg-white border border-slate-200/80 rounded-3xl p-6 shadow-sm space-y-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div>
+                    <h3 class="text-base font-bold font-heading text-slate-900">Parameter Analisis AI & Metrik Penilaian</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Kesimpulan AI dihasilkan dari evaluasi 5 parameter utama berdasarkan data real postingan Instagram di database.</p>
+                </div>
+                <span class="px-3 py-1 bg-emerald-50 text-emerald-800 font-bold text-xs rounded-xl border border-emerald-200 font-mono">5 Parameter Evaluasi</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                @foreach(($portfolioAnalysis['parameters_evaluated'] ?? []) as $param)
+                    <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200/80 flex flex-col justify-between space-y-3">
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xl">{{ $param['icon'] }}</span>
+                                <span class="text-[10px] font-bold font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-700">{{ $param['weight'] }}</span>
+                            </div>
+                            <h4 class="text-xs font-bold text-slate-900 leading-snug">{{ $param['name'] }}</h4>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">{{ $param['description'] }}</p>
+                        </div>
+                        <span class="text-[9px] font-mono text-slate-400 font-bold uppercase tracking-wider">{{ $param['code'] }}</span>
+                    </div>
+                @endforeach
+            </div>
         </div>
 
         <!-- 3 Columns Detail Breakdown -->

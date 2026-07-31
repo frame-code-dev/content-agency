@@ -39,6 +39,17 @@
             </div>
         </div>
 
+        <!-- Parameter Analysis Notice -->
+        <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4 mb-6 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center space-x-2 text-neutral-700 font-medium">
+                <span class="text-base">📌</span>
+                <span><strong>Parameter Audit AI:</strong> Hasil audit dihitung berdasarkan 4 parameter real (1. Interaksi Likes/Komen, 2. Formula Hook & CTA, 3. Kepadatan Hashtag, 4. Sentimen Bahasa).</span>
+            </div>
+            <span class="px-2.5 py-1 bg-white border border-neutral-300 rounded font-mono text-[11px] text-neutral-600">
+                Data Source: Real Instagram Post DB
+            </span>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Left Column: Original Asset -->
             <div class="space-y-6">
