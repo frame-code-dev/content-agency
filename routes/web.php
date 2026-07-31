@@ -47,7 +47,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/competitors/auto-hermes', [CompetitorController::class, 'autoGenerateHermes'])->name('competitors.auto-hermes');
     Route::delete('/competitors/{competitor}', [CompetitorController::class, 'destroy'])->name('competitors.destroy');
 
-    // Instagram Disconnect
+    // Instagram Disconnect & Sync
+    Route::post('/auth/instagram/sync', [InstagramController::class, 'sync'])->name('instagram.sync');
     Route::post('/auth/instagram/disconnect', [InstagramController::class, 'disconnect'])->name('instagram.disconnect');
 
     // AI Analysis

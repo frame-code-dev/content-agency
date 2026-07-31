@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class InstagramAccount extends Model
 {
     use HasFactory;
@@ -19,16 +21,34 @@ class InstagramAccount extends Model
         'access_token',
         'token_type',
         'token_expires_at',
+        'followers_count',
+        'follows_count',
+        'media_count',
+        'reach',
+        'impressions',
+        'engagement_rate',
+        'profile_views',
+        'is_live_api',
+        'insights_data',
+        'last_synced_at',
     ];
 
     protected $casts = [
         'access_token' => 'encrypted',
         'token_expires_at' => 'datetime',
+        'is_live_api' => 'boolean',
+        'insights_data' => 'array',
+        'last_synced_at' => 'datetime',
     ];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(InstagramPost::class);
     }
 
     public function isTokenExpired(): bool

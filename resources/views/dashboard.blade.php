@@ -60,9 +60,17 @@
                         <span class="w-2 h-2 rounded-full {{ method_exists($account, 'isTokenExpired') && $account->isTokenExpired() ? 'bg-amber-500 animate-ping' : 'bg-emerald-500 animate-pulse' }}"></span>
                         <span class="font-semibold text-slate-700 font-mono">{{ '@' . ($account->username ?? 'account') }}</span>
                         
+                        <!-- Sync API & DB Button -->
+                        <form action="{{ route('instagram.sync') }}" method="POST" class="inline">
+                            @csrf
+                            <button type="submit" title="Sync API & Store to Database" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold rounded-xl text-[11px] border border-emerald-200 transition">
+                                🔄 Sync DB
+                            </button>
+                        </form>
+
                         <!-- Reconnect Button -->
-                        <a href="{{ route('instagram.connect') }}" title="Reconnect Instagram to refresh token" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold rounded-xl text-[11px] border border-emerald-200 transition">
-                            🔄 Reconnect
+                        <a href="{{ route('instagram.connect') }}" title="Reconnect Instagram to refresh token" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-[11px] border border-slate-200 transition">
+                            🔑 Reconnect
                         </a>
 
                         <!-- Disconnect Button Form -->
@@ -134,6 +142,48 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                         </svg>
                     </button>
+                </div>
+            </div>
+
+            <!-- Development Status & API Explanation Notice Banner -->
+            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-800/40 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center shrink-0 text-xl">
+                            ⚙️
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <h3 class="text-base font-bold font-heading">Status API Instagram & Mode Database Sync</h3>
+                                @if($insights['is_live_api'] ?? false)
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🟢 Live Meta Graph API</span>
+                                @else
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">⚡ Mode Simulasi Development (Tersimpan di DB)</span>
+                                @endif
+                            </div>
+                            <p class="text-xs text-slate-300 mt-1 leading-relaxed max-w-3xl">
+                                Seluruh postingan & metrik analitik di bawah telah **disimpan ke database PostgreSQL**. 
+                                @if(!($insights['is_live_api'] ?? false))
+                                    <span class="text-amber-200 font-medium">Mengapa menggunakan Mode Simulasi Development?</span> 
+                                    Saat ini kredensial aplikasi Meta Production (`INSTAGRAM_CLIENT_ID` / `CLIENT_SECRET`) belum diisi atau masih membutuhkan persetujuan **Meta App Review** & **Instagram Professional Account**. Data hasil simulasi di-generate secara realistis dan tersimpan utuh di DB.
+                                @else
+                                    Data terhubung secara langsung dari endpoint Meta Graph API real-time dan tersimpan di database.
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:items-end shrink-0 space-y-2">
+                        <div class="text-[11px] text-slate-400 font-mono">
+                            Terakhir di-sync ke DB: <span class="text-indigo-300 font-semibold">{{ isset($insights['last_synced_at']) ? \Carbon\Carbon::parse($insights['last_synced_at'])->diffForHumans() : 'Baru saja' }}</span>
+                        </div>
+                        <form action="{{ route('instagram.sync') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="px-4 py-2 bg-[#A3E635] hover:bg-[#84CC16] text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center space-x-1.5">
+                                <span>🔄 Sync Ulang API & Database</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
@@ -248,21 +298,21 @@
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#84CC16]"></span>
                                 <span class="text-slate-600">Male</span>
                             </div>
-                            <span class="text-slate-900 font-bold">52.1%</span>
+                            <span class="text-slate-900 font-bold">{{ $insights['male_pct'] ?? '41.8%' }}</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#A3E635]"></span>
                                 <span class="text-slate-600">Female</span>
                             </div>
-                            <span class="text-slate-900 font-bold">22.8%</span>
+                            <span class="text-slate-900 font-bold">{{ $insights['female_pct'] ?? '58.2%' }}</span>
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#D9F99D]"></span>
                                 <span class="text-slate-600">Other</span>
                             </div>
-                            <span class="text-slate-900 font-bold">13.9%</span>
+                            <span class="text-slate-900 font-bold">{{ $insights['other_pct'] ?? '0.0%' }}</span>
                         </div>
                     </div>
                 </div>
@@ -354,42 +404,17 @@
 
                         <!-- Country Bars -->
                         <div class="w-1/2 space-y-2.5 text-xs font-semibold">
-                            <div>
-                                <div class="flex justify-between text-slate-600 mb-0.5">
-                                    <span>Filipina</span>
-                                    <span class="font-bold text-slate-900">12K</span>
+                            @foreach(($insights['countries'] ?? []) as $c)
+                                <div>
+                                    <div class="flex justify-between text-slate-600 mb-0.5">
+                                        <span>{{ $c['name'] }}</span>
+                                        <span class="font-bold text-slate-900">{{ $c['count'] }}</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-[#A3E635] h-1.5 rounded-full" style="width: {{ $c['pct'] }}%"></div>
+                                    </div>
                                 </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#A3E635] h-1.5 rounded-full" style="width: 25%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-slate-600 mb-0.5">
-                                    <span>Thailand</span>
-                                    <span class="font-bold text-slate-900">106K</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#A3E635] h-1.5 rounded-full" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-slate-600 mb-0.5">
-                                    <span>Japan</span>
-                                    <span class="font-bold text-slate-900">16K</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#A3E635] h-1.5 rounded-full" style="width: 35%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-slate-600 mb-0.5">
-                                    <span>Rusia</span>
-                                    <span class="font-bold text-slate-900">16K</span>
-                                </div>
-                                <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                                    <div class="bg-[#A3E635] h-1.5 rounded-full" style="width: 35%"></div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -399,46 +424,15 @@
                     <h3 class="text-sm font-bold font-heading text-slate-900 mb-4">Age groups</h3>
 
                     <div class="space-y-3.5">
-                        <div class="flex items-center space-x-3 text-xs font-semibold">
-                            <span class="w-12 text-slate-500">12-17</span>
-                            <div class="flex-1 bg-slate-100 h-7 rounded-xl overflow-hidden relative">
-                                <div class="bg-slate-200 h-full rounded-xl transition-all duration-500" style="width: 5%"></div>
-                                <span class="absolute right-3 top-1.5 text-[11px] font-bold text-slate-700">5%</span>
+                        @foreach(($insights['age_groups'] ?? []) as $group)
+                            <div class="flex items-center space-x-3 text-xs font-semibold">
+                                <span class="w-12 {{ ($group['active'] ?? false) ? 'text-slate-900 font-bold' : 'text-slate-500' }}">{{ $group['range'] }}</span>
+                                <div class="flex-1 bg-slate-100 h-7 rounded-xl overflow-hidden relative {{ ($group['active'] ?? false) ? 'shadow-sm' : '' }}">
+                                    <div class="{{ ($group['active'] ?? false) ? 'bg-[#A3E635]' : 'bg-slate-200' }} h-full rounded-xl transition-all duration-500" style="width: {{ $group['pct'] }}%"></div>
+                                    <span class="absolute right-3 top-1.5 text-[11px] font-bold {{ ($group['active'] ?? false) ? 'text-slate-900' : 'text-slate-700' }}">{{ $group['pct'] }}%</span>
+                                </div>
                             </div>
-                        </div>
-
-                        <!-- Highlighted Age Bracket: 18-24 -->
-                        <div class="flex items-center space-x-3 text-xs font-semibold">
-                            <span class="w-12 text-slate-900 font-bold">18-24</span>
-                            <div class="flex-1 bg-slate-100 h-7 rounded-xl overflow-hidden relative shadow-sm">
-                                <div class="bg-[#A3E635] h-full rounded-xl transition-all duration-500" style="width: 80%"></div>
-                                <span class="absolute right-3 top-1.5 text-[11px] font-bold text-slate-900">80%</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 text-xs font-semibold">
-                            <span class="w-12 text-slate-500">24-35</span>
-                            <div class="flex-1 bg-slate-100 h-7 rounded-xl overflow-hidden relative">
-                                <div class="bg-slate-200 h-full rounded-xl transition-all duration-500" style="width: 10%"></div>
-                                <span class="absolute right-3 top-1.5 text-[11px] font-bold text-slate-700">10%</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 text-xs font-semibold">
-                            <span class="w-12 text-slate-500">35-44</span>
-                            <div class="flex-1 bg-slate-100 h-7 rounded-xl overflow-hidden relative">
-                                <div class="bg-slate-200 h-full rounded-xl transition-all duration-500" style="width: 10%"></div>
-                                <span class="absolute right-3 top-1.5 text-[11px] font-bold text-slate-700">10%</span>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center space-x-3 text-xs font-semibold">
-                            <span class="w-12 text-slate-500">44-60</span>
-                            <div class="flex-1 bg-slate-100 h-7 rounded-xl overflow-hidden relative">
-                                <div class="bg-slate-200 h-full rounded-xl" style="width: 0%"></div>
-                                <span class="absolute right-3 top-1.5 text-[11px] font-bold text-slate-400">0%</span>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -583,7 +577,11 @@
                             data: {
                                 labels: ['Male', 'Female', 'Other'],
                                 datasets: [{
-                                    data: [52.1, 22.8, 13.9],
+                                    data: [
+                                        parseFloat("{{ str_replace('%', '', $insights['male_pct'] ?? '41.8') }}"),
+                                        parseFloat("{{ str_replace('%', '', $insights['female_pct'] ?? '58.2') }}"),
+                                        parseFloat("{{ str_replace('%', '', $insights['other_pct'] ?? '0.0') }}")
+                                    ],
                                     backgroundColor: ['#84CC16', '#A3E635', '#D9F99D'],
                                     borderWidth: 0,
                                     hoverOffset: 4

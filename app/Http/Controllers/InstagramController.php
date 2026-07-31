@@ -55,6 +55,21 @@ class InstagramController extends Controller
         }
     }
 
+    public function sync()
+    {
+        $user = auth()->user();
+        if ($user && $user->instagramAccount) {
+            try {
+                $this->instagramService->syncAccountData($user->instagramAccount);
+                return redirect()->route('dashboard')->with('success', 'Data Instagram berhasil disinkronkan dan disimpan ke database.');
+            } catch (Exception $e) {
+                return redirect()->route('dashboard')->with('error', 'Gagal sinkronisasi data API Instagram: ' . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('dashboard')->with('error', 'Tidak ada akun Instagram yang terhubung.');
+    }
+
     public function disconnect()
     {
         $user = auth()->user() ?? \App\Models\User::first();
