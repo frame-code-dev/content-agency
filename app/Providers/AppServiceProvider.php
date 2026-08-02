@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,12 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (request()->hasHeader('x-forwarded-proto') && request()->header('x-forwarded-proto') === 'https') {
-            URL::forceScheme('https');
-        }
-
-        if (str_contains(request()->header('host', ''), 'ngrok') || str_contains(config('app.url'), 'https://')) {
-            URL::forceScheme('https');
-        }
+        //
     }
 }

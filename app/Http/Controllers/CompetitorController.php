@@ -40,7 +40,7 @@ class CompetitorController extends Controller
 
         $gapAnalysis = $this->competitorService->runGapAnalysis($insights, $competitors->toArray());
 
-        return view('competitors', compact('account', 'insights', 'competitors', 'gapAnalysis'));
+        return view('competitors', compact('account', 'posts', 'insights', 'competitors', 'gapAnalysis'));
     }
 
     public function autoGenerateHermes()

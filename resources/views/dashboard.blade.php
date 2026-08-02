@@ -23,25 +23,90 @@
         @endif
 
         @if(!$account)
-            <!-- Initial Onboarding State: Connect Instagram Screen -->
-            <div class="max-w-3xl mx-auto my-12 bg-white border border-slate-200/80 rounded-3xl p-12 text-center shadow-lg">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 text-white mb-6 shadow-lg shadow-pink-500/20">
-                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                    </svg>
-                </div>
-                <h2 class="text-2xl font-bold font-heading text-slate-900 tracking-tight">Connect Your Instagram Account</h2>
-                <p class="text-sm text-slate-500 mt-3 max-w-lg mx-auto leading-relaxed">
-                    Link your agency or brand Instagram channel to enable automated content auditing, follower growth analytics, and sentiment reports.
-                </p>
-
-                <div class="mt-8">
-                    <a href="{{ route('instagram.connect') }}" class="inline-flex items-center space-x-3 px-8 py-4 bg-[#072215] hover:bg-[#051910] text-[#A3E635] text-sm font-bold tracking-wide rounded-2xl shadow-xl hover:scale-105 transition transform duration-200">
-                        <svg class="w-5 h-5 text-[#A3E635]" fill="currentColor" viewBox="0 0 24 24">
+            <!-- Initial Onboarding State: Connect Instagram or Upload Meta Export ZIP -->
+            <div class="max-w-4xl mx-auto my-8 bg-white border border-slate-200/80 rounded-3xl p-8 md:p-10 shadow-lg">
+                <div class="text-center max-w-xl mx-auto">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-3xl bg-gradient-to-tr from-purple-600 via-pink-600 to-amber-500 text-white mb-4 shadow-lg shadow-pink-500/20">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                         </svg>
-                        <span>Connect Instagram Account</span>
-                    </a>
+                    </div>
+                    <h2 class="text-2xl font-bold font-heading text-slate-900 tracking-tight">Setup Analitik Instagram Anda</h2>
+                    <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                        Pilih opsi terbaik untuk menghubungkan data kanal Instagram Anda ke dalam dashboard analitik Cineart Production.
+                    </p>
+                </div>
+
+                <!-- 2 Integration Methods Card Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <!-- Method 1: Connect via OAuth Live API -->
+                    <div class="bg-slate-50 border border-slate-200/90 rounded-2xl p-6 flex flex-col justify-between hover:border-slate-300 transition">
+                        <div>
+                            <div class="inline-flex items-center px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded-lg text-[10px] font-bold uppercase tracking-wider mb-3">
+                                Opsi 1: Direct OAuth
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">Hubungkan via Meta OAuth</h3>
+                            <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                Hubungkan langsung akun Instagram Professional / Business Anda via login dialog resmi dari Meta Facebook.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-200/60">
+                            <a href="{{ route('instagram.connect') }}" class="w-full flex items-center justify-center space-x-2 px-5 py-3 bg-[#072215] hover:bg-[#051910] text-[#A3E635] text-xs font-bold rounded-xl shadow transition">
+                                <svg class="w-4 h-4 text-[#A3E635]" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                                <span>Connect via Instagram OAuth</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Method 2: Import Instagram Data Export (.ZIP / .JSON) -->
+                    <div class="bg-[#072215]/5 border border-emerald-900/20 rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="inline-flex items-center px-2.5 py-1 bg-purple-100 text-purple-800 rounded-lg text-[10px] font-bold uppercase tracking-wider mb-3">
+                                Opsi 2: Upload Data Export (.ZIP / .JSON)
+                            </div>
+                            <h3 class="text-base font-bold text-slate-900">Import File Data Instagram</h3>
+                            <p class="text-xs text-slate-600 mt-2 leading-relaxed">
+                                Upload file ekspor data Instagram Anda jika tidak dapat terhubung langsung via Meta OAuth.
+                            </p>
+                            
+                            <!-- Help Meta Accounts Center Notice -->
+                            <div class="mt-3 p-3 bg-white border border-emerald-200/80 rounded-xl text-[11px] text-slate-600 leading-relaxed shadow-sm">
+                                💡 <strong>Tips Ekspor Data:</strong> <em>"You can download your Instagram data through the Meta Accounts Center by going to your information settings."</em>
+                            </div>
+                        </div>
+
+                        <!-- ZIP File Upload Form & Progress Bar Container -->
+                        <div class="mt-6 pt-4 border-t border-slate-200/60 space-y-3">
+                            <form id="igZipUploadForm" class="space-y-3">
+                                @csrf
+                                <div class="relative">
+                                    <input type="file" id="export_file" name="export_file" accept=".zip,.json" class="hidden" onchange="handleFileSelected(this)">
+                                    <label for="export_file" class="w-full flex items-center justify-center space-x-2 px-4 py-3 bg-white hover:bg-slate-50 border-2 border-dashed border-emerald-600/40 text-slate-700 text-xs font-bold rounded-xl cursor-pointer transition shadow-sm">
+                                        <span class="text-lg">📁</span>
+                                        <span id="selectedFileName">Pilih File .ZIP / .JSON Ekspor</span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" id="btnSubmitZip" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow transition hidden">
+                                    🚀 Upload & Ekstrak Data Ke Database
+                                </button>
+                            </form>
+
+                            <!-- Progress Bar Component -->
+                            <div id="uploadProgressContainer" class="hidden space-y-2 pt-2">
+                                <div class="flex items-center justify-between text-xs font-semibold">
+                                    <span id="progressStatusText" class="text-slate-700 font-mono">Mengunggah file zip...</span>
+                                    <span id="progressPercentText" class="text-emerald-700 font-bold">0%</span>
+                                </div>
+                                <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden shadow-inner">
+                                    <div id="uploadProgressBar" class="bg-gradient-to-r from-emerald-500 to-[#A3E635] h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                </div>
+                                <div id="progressStepSubtext" class="text-[10px] text-slate-400 font-mono text-center">Proses ekstraksi JSON & penyimpanan ke database PostgreSQL</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         @else
@@ -67,6 +132,11 @@
                                 🔄 Sync DB
                             </button>
                         </form>
+
+                        <!-- Import Meta Export ZIP Modal Button -->
+                        <button type="button" onclick="openUploadModal()" title="Upload File Ekspor Meta Instagram (.ZIP / .JSON)" class="px-2.5 py-1 bg-purple-50 hover:bg-purple-100 text-purple-800 font-bold rounded-xl text-[11px] border border-purple-200 transition">
+                            📁 Import ZIP
+                        </button>
 
                         <!-- Reconnect Button -->
                         <a href="{{ route('instagram.connect') }}" title="Reconnect Instagram to refresh token" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl text-[11px] border border-slate-200 transition">
@@ -146,41 +216,43 @@
             </div>
 
             <!-- Development Status & API Explanation Notice Banner -->
-            <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-800/40 rounded-3xl p-6 text-white shadow-md relative overflow-hidden">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-white shadow-sm relative overflow-hidden">
                 <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                    <div class="flex items-start space-x-4">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center shrink-0 text-xl">
-                            ⚙️
+                    <div class="flex items-start space-x-3.5">
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center shrink-0 text-lg text-indigo-400">
+                            ⚡
                         </div>
                         <div>
                             <div class="flex items-center space-x-2">
-                                <h3 class="text-base font-bold font-heading">Status API Instagram & Mode Database Sync</h3>
+                                <h3 class="text-sm font-bold font-heading text-white">Status API Instagram & Mode Database Sync</h3>
                                 @if($insights['is_live_api'] ?? false)
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">🟢 Live Meta Graph API</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Live Meta Graph API</span>
                                 @else
-                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">⚡ Mode Simulasi Development (Tersimpan di DB)</span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/30">Mode Database (Ekspor Meta / Simulasi)</span>
                                 @endif
                             </div>
                             <p class="text-xs text-slate-300 mt-1 leading-relaxed max-w-3xl">
-                                Seluruh postingan & metrik analitik di bawah telah **disimpan ke database PostgreSQL**. 
+                                Postingan & metrik analitik di bawah bersumber dari <strong class="text-white font-semibold">Database PostgreSQL</strong>. 
                                 @if(!($insights['is_live_api'] ?? false))
-                                    <span class="text-amber-200 font-medium">Mengapa menggunakan Mode Simulasi Development?</span> 
-                                    Saat ini kredensial aplikasi Meta Production (`INSTAGRAM_CLIENT_ID` / `CLIENT_SECRET`) belum diisi atau masih membutuhkan persetujuan **Meta App Review** & **Instagram Professional Account**. Data hasil simulasi di-generate secara realistis dan tersimpan utuh di DB.
+                                    Data ini diambil dari hasil ekstraksi file ekspor Meta (.zip / .json) atau data simulasi pengembangan.
                                 @else
-                                    Data terhubung secara langsung dari endpoint Meta Graph API real-time dan tersimpan di database.
+                                    Data terhubung secara langsung via Meta Graph API real-time.
                                 @endif
                             </p>
                         </div>
                     </div>
 
-                    <div class="flex flex-col md:items-end shrink-0 space-y-2">
-                        <div class="text-[11px] text-slate-400 font-mono">
-                            Terakhir di-sync ke DB: <span class="text-indigo-300 font-semibold">{{ isset($insights['last_synced_at']) ? \Carbon\Carbon::parse($insights['last_synced_at'])->diffForHumans() : 'Baru saja' }}</span>
+                    <div class="flex items-center space-x-3 shrink-0">
+                        <div class="text-[11px] text-slate-400 font-mono hidden sm:block">
+                            Terakhir di-sync: <span class="text-indigo-300 font-medium">{{ isset($insights['last_synced_at']) ? \Carbon\Carbon::parse($insights['last_synced_at'])->diffForHumans() : 'Baru saja' }}</span>
                         </div>
+                        <button type="button" onclick="openUploadModal()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-1.5">
+                            <span>📁 Import ZIP / JSON</span>
+                        </button>
                         <form action="{{ route('instagram.sync') }}" method="POST">
                             @csrf
-                            <button type="submit" class="px-4 py-2 bg-[#A3E635] hover:bg-[#84CC16] text-slate-950 font-bold text-xs rounded-xl shadow-lg transition flex items-center space-x-1.5">
-                                <span>🔄 Sync Ulang API & Database</span>
+                            <button type="submit" class="px-3.5 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-semibold text-xs rounded-xl border border-zinc-700 shadow transition flex items-center space-x-1.5">
+                                <span>🔄 Sync DB</span>
                             </button>
                         </form>
                     </div>
@@ -455,63 +527,76 @@
 
             <!-- Recent Assets & Real Database Content Feed Grid -->
             <div class="bg-white border border-slate-200/70 rounded-3xl p-6 shadow-sm">
-                <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-5 pb-4 border-b border-slate-100 gap-3">
                     <div>
                         <h3 class="text-base font-bold font-heading text-slate-900">Recent Content Assets & AI Audit</h3>
-                        <p class="text-xs text-slate-500 mt-0.5">Real assets fetched from database and Meta Graph API.</p>
+                        <p class="text-xs text-slate-500 mt-0.5">Real assets fetched from database and Meta Graph API (10 per halaman).</p>
                     </div>
                     <div class="flex items-center space-x-3">
-                        <span class="text-xs font-semibold text-slate-400 font-mono">{{ count($posts) }} Posts Available</span>
+                        <span class="text-xs font-semibold text-slate-400 font-mono">{{ isset($postsPaginator) ? $postsPaginator->total() : count($posts) }} Posts Available</span>
                         <form action="{{ route('analysis.portfolio') }}" method="POST" class="inline">
                             @csrf
-                            <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-[#A3E635] text-xs font-bold rounded-xl shadow transition flex items-center space-x-1.5">
+                            <button type="submit" class="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-[#A3E635] text-xs font-bold rounded-xl shadow transition flex items-center space-x-1.5 font-mono">
                                 <span>⚡ Audit Keseluruhan Post</span>
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @forelse($posts as $post)
+                @php
+                    $displayItems = isset($postsPaginator) && $postsPaginator->count() > 0 ? $postsPaginator : $posts;
+                @endphp
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    @forelse($displayItems as $postItem)
+                        @php
+                            $pId = is_array($postItem) ? ($postItem['id'] ?? '') : ($postItem->instagram_post_id ?? $postItem->id);
+                            $pCap = is_array($postItem) ? ($postItem['caption'] ?? '') : ($postItem->caption ?? '');
+                            $pType = is_array($postItem) ? ($postItem['media_type'] ?? '') : ($postItem->media_type ?? '');
+                            $pUrl = is_array($postItem) ? ($postItem['media_url'] ?? '') : ($postItem->media_url ?? '');
+                            $pLikes = is_array($postItem) ? ($postItem['like_count'] ?? 0) : ($postItem->like_count ?? 0);
+                            $pComments = is_array($postItem) ? ($postItem['comments_count'] ?? 0) : ($postItem->comments_count ?? 0);
+                            $fallbackImg = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=600&q=80';
+                        @endphp
                         <div class="bg-slate-50/70 border border-slate-200/80 rounded-2xl overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-200">
                             <div>
-                                @if(isset($post['media_url']) && (str_contains($post['media_type'] ?? '', 'IMAGE') || str_contains($post['media_type'] ?? '', 'VIDEO')))
-                                    <div class="aspect-square w-full bg-slate-200 overflow-hidden relative">
-                                        @if(str_contains($post['media_type'] ?? '', 'VIDEO'))
-                                            <video src="{{ $post['media_url'] }}" class="w-full h-full object-cover" muted loop></video>
-                                            <span class="absolute top-3 right-3 bg-slate-900/80 text-white text-[10px] px-2.5 py-1 rounded-lg font-semibold uppercase backdrop-blur">Reels</span>
+                                @if(!empty($pUrl) && (str_contains($pType, 'IMAGE') || str_contains($pType, 'VIDEO')))
+                                    <div class="aspect-[4/3] w-full bg-slate-200 overflow-hidden relative">
+                                        @if(str_contains($pType, 'VIDEO'))
+                                            <video src="{{ $pUrl }}" class="w-full h-full object-cover" muted loop></video>
+                                            <span class="absolute top-2 right-2 bg-slate-900/80 text-white text-[9px] px-2 py-0.5 rounded font-semibold uppercase backdrop-blur">Reels</span>
                                         @else
-                                            <img src="{{ $post['media_url'] }}" alt="Post Media" class="w-full h-full object-cover">
+                                            <img src="{{ $pUrl }}" alt="Post Media" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{{ $fallbackImg }}';">
                                         @endif
                                     </div>
                                 @else
-                                    <div class="aspect-square w-full bg-slate-100 flex items-center justify-center p-6 text-center">
-                                        <span class="text-xs font-bold uppercase tracking-widest text-slate-400">{{ $post['media_type'] ?? 'CAROUSEL' }}</span>
+                                    <div class="aspect-[4/3] w-full bg-slate-100 flex items-center justify-center p-3 text-center overflow-hidden">
+                                        <img src="{{ $fallbackImg }}" alt="Post Media" class="w-full h-full object-cover">
                                     </div>
                                 @endif
 
-                                <div class="p-5">
-                                    <p class="text-xs text-slate-700 line-clamp-3 leading-relaxed">
-                                        {{ $post['caption'] ?? 'No caption provided.' }}
+                                <div class="p-3">
+                                    <p class="text-[11px] text-slate-700 line-clamp-2 leading-tight">
+                                        {{ !empty($pCap) ? $pCap : 'No caption provided.' }}
                                     </p>
                                 </div>
                             </div>
 
-                            <div class="p-5 pt-0 space-y-3">
-                                <div class="flex items-center justify-between text-xs text-slate-600 font-semibold border-t border-slate-200/60 pt-3">
-                                    <span>❤️ {{ number_format($post['like_count'] ?? 0) }} Likes</span>
-                                    <span>💬 {{ number_format($post['comments_count'] ?? 0) }} Comments</span>
+                            <div class="p-3 pt-0 space-y-2">
+                                <div class="flex items-center justify-between text-[10px] text-slate-600 font-semibold border-t border-slate-200/60 pt-2 font-mono">
+                                    <span>❤️ {{ number_format($pLikes) }}</span>
+                                    <span>💬 {{ number_format($pComments) }}</span>
                                 </div>
 
                                 <form action="{{ route('analysis.process') }}" method="POST">
                                     @csrf
-                                    <input type="hidden" name="post_id" value="{{ $post['id'] }}">
-                                    <input type="hidden" name="caption" value="{{ $post['caption'] ?? '' }}">
-                                    <input type="hidden" name="media_url" value="{{ $post['media_url'] ?? '' }}">
-                                    <input type="hidden" name="likes" value="{{ $post['like_count'] ?? 0 }}">
-                                    <input type="hidden" name="comments" value="{{ $post['comments_count'] ?? 0 }}">
+                                    <input type="hidden" name="post_id" value="{{ $pId }}">
+                                    <input type="hidden" name="caption" value="{{ $pCap }}">
+                                    <input type="hidden" name="media_url" value="{{ $pUrl }}">
+                                    <input type="hidden" name="likes" value="{{ $pLikes }}">
+                                    <input type="hidden" name="comments" value="{{ $pComments }}">
 
-                                    <button type="submit" class="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl shadow-sm transition">
+                                    <button type="submit" class="w-full py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-[11px] font-bold rounded-lg shadow-sm transition">
                                         Run AI Audit
                                     </button>
                                 </form>
@@ -523,6 +608,12 @@
                         </div>
                     @endforelse
                 </div>
+
+                @if(isset($postsPaginator) && $postsPaginator->hasPages())
+                    <div class="mt-6 pt-4 border-t border-slate-100">
+                        {{ $postsPaginator->links() }}
+                    </div>
+                @endif
             </div>
 
             <!-- Chart.js Setup Scripts for SocialPulse Dashboards -->
@@ -648,4 +739,200 @@
         @endif
 
     </div>
+
+    <!-- Upload Meta Export ZIP Modal -->
+    <div id="modalUploadZip" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 rounded-3xl p-6 md:p-8 max-w-lg w-full shadow-2xl relative">
+            <button type="button" onclick="closeUploadModal()" class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 font-bold text-lg p-2 rounded-xl transition">✕</button>
+            
+            <div class="flex items-center space-x-3.5 mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-purple-100 text-purple-700 flex items-center justify-center text-2xl shadow-sm shrink-0">📁</div>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 font-heading">Import Data Ekspor Instagram</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">Unggah file .ZIP / .JSON dari Meta Accounts Center (Hingga 2GB+)</p>
+                </div>
+            </div>
+
+            <!-- Help Notice -->
+            <div class="p-3 bg-purple-50/60 border border-purple-200/80 rounded-xl text-[11px] text-purple-900 leading-relaxed mb-4">
+                💡 <strong>Tips Meta Accounts Center:</strong> <em>"You can download your Instagram data through the Meta Accounts Center by going to your information settings."</em>
+            </div>
+
+            <form id="igZipUploadFormModal" class="space-y-4">
+                @csrf
+                <div class="relative">
+                    <input type="file" id="export_file_modal" name="export_file" accept=".zip,.json" class="hidden" onchange="handleModalFileSelected(this)">
+                    <label for="export_file_modal" class="w-full flex flex-col items-center justify-center p-6 bg-slate-50 hover:bg-slate-100 border-2 border-dashed border-purple-500/40 text-slate-700 text-xs font-bold rounded-2xl cursor-pointer transition shadow-sm group">
+                        <span class="text-3xl mb-2 group-hover:scale-110 transition-transform">📦</span>
+                        <span id="selectedModalFileName" class="text-slate-800 font-bold text-center">Pilih File .ZIP / .JSON Ekspor (Ukuran Besar 700MB+)</span>
+                        <span class="text-[10px] text-slate-400 font-normal mt-1">Sistem otomatis memotong & mengunggah bertahap (Chunked Resumable Upload)</span>
+                    </label>
+                </div>
+
+                <button type="submit" id="btnSubmitZipModal" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-lg transition hidden">
+                    🚀 Upload & Ekstrak Data Ke Database
+                </button>
+            </form>
+
+            <!-- Progress Bar Component for Modal -->
+            <div id="uploadProgressContainerModal" class="hidden space-y-2 pt-3">
+                <div class="flex items-center justify-between text-xs font-semibold">
+                    <span id="progressStatusTextModal" class="text-slate-700 font-mono">Mengunggah file zip...</span>
+                    <span id="progressPercentTextModal" class="text-purple-700 font-bold">0%</span>
+                </div>
+                <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden shadow-inner">
+                    <div id="uploadProgressBarModal" class="bg-gradient-to-r from-purple-600 to-pink-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div id="progressStepSubtextModal" class="text-[10px] text-slate-400 font-mono text-center">Proses ekstraksi JSON & penyimpanan ke database PostgreSQL</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Upload Progress Bar & Meta Export ZIP Import Handler -->
+    <script>
+        function openUploadModal() {
+            const modal = document.getElementById('modalUploadZip');
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function closeUploadModal() {
+            const modal = document.getElementById('modalUploadZip');
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function handleFileSelected(input) {
+            const fileNameSpan = document.getElementById('selectedFileName');
+            const btnSubmit = document.getElementById('btnSubmitZip');
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (fileNameSpan) {
+                    fileNameSpan.textContent = file.name + ' (' + (file.size / (1024 * 1024)).toFixed(2) + ' MB)';
+                }
+                if (btnSubmit) {
+                    btnSubmit.classList.remove('hidden');
+                }
+            }
+        }
+
+        function handleModalFileSelected(input) {
+            const fileNameSpan = document.getElementById('selectedModalFileName');
+            const btnSubmit = document.getElementById('btnSubmitZipModal');
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                if (fileNameSpan) {
+                    fileNameSpan.textContent = file.name + ' (' + (file.size / (1024 * 1024)).toFixed(2) + ' MB)';
+                }
+                if (btnSubmit) {
+                    btnSubmit.classList.remove('hidden');
+                }
+            }
+        }
+
+        async function executeChunkedUpload(fileInput, progressContainer, progressBar, progressPercent, progressStatus, progressSubtext, btnSubmit) {
+            if (!fileInput || !fileInput.files[0]) {
+                alert('Harap pilih file .zip atau .json terlebih dahulu.');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const csrfToken = document.querySelector('input[name="_token"]')?.value || '';
+
+            if (progressContainer) progressContainer.classList.remove('hidden');
+            if (btnSubmit) btnSubmit.disabled = true;
+
+            const CHUNK_SIZE = 2 * 1024 * 1024; // 2 MB per chunk slice
+            const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+            const fileId = 'ig_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+            try {
+                for (let i = 0; i < totalChunks; i++) {
+                    const start = i * CHUNK_SIZE;
+                    const end = Math.min(start + CHUNK_SIZE, file.size);
+                    const chunkBlob = file.slice(start, end);
+
+                    const formData = new FormData();
+                    formData.append('_token', csrfToken);
+                    formData.append('file_chunk', chunkBlob, file.name);
+                    formData.append('file_id', fileId);
+                    formData.append('chunk_index', i);
+                    formData.append('total_chunks', totalChunks);
+                    formData.append('file_name', file.name);
+
+                    const response = await fetch('{{ route("instagram.upload-chunk") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: formData
+                    });
+
+                    if (!response.ok) {
+                        let errMessage = 'Gagal mengunggah bagian ' + (i + 1) + ' (Status: ' + response.status + ')';
+                        try {
+                            const errJson = await response.json();
+                            if (errJson.message) errMessage = errJson.message;
+                        } catch (e) {}
+                        throw new Error(errMessage);
+                    }
+
+                    const result = await response.json();
+                    const percentComplete = Math.round(((i + 1) / totalChunks) * 100);
+
+                    if (progressBar) progressBar.style.width = percentComplete + '%';
+                    if (progressPercent) progressPercent.textContent = percentComplete + '%';
+
+                    if (i < totalChunks - 1) {
+                        if (progressStatus) progressStatus.textContent = 'Mengunggah bagian ' + (i + 1) + ' dari ' + totalChunks + ' (' + percentComplete + '%)...';
+                    } else {
+                        if (progressStatus) progressStatus.textContent = '⚡ Ekstraksi ZIP & Simpan ke DB Sukses!';
+                        if (progressSubtext) progressSubtext.textContent = 'Memuat ulang dashboard analitik...';
+
+                        setTimeout(function () {
+                            window.location.href = result.redirect || '{{ route("dashboard") }}';
+                        }, 1200);
+                    }
+                }
+            } catch (err) {
+                alert('Gagal mengunggah file ZIP: ' + err.message);
+                if (btnSubmit) btnSubmit.disabled = false;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Onboarding Form Listener
+            const uploadForm = document.getElementById('igZipUploadForm');
+            if (uploadForm) {
+                uploadForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    executeChunkedUpload(
+                        document.getElementById('export_file'),
+                        document.getElementById('uploadProgressContainer'),
+                        document.getElementById('uploadProgressBar'),
+                        document.getElementById('progressPercentText'),
+                        document.getElementById('progressStatusText'),
+                        document.getElementById('progressStepSubtext'),
+                        document.getElementById('btnSubmitZip')
+                    );
+                });
+            }
+
+            // Modal Form Listener
+            const uploadFormModal = document.getElementById('igZipUploadFormModal');
+            if (uploadFormModal) {
+                uploadFormModal.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    executeChunkedUpload(
+                        document.getElementById('export_file_modal'),
+                        document.getElementById('uploadProgressContainerModal'),
+                        document.getElementById('uploadProgressBarModal'),
+                        document.getElementById('progressPercentTextModal'),
+                        document.getElementById('progressStatusTextModal'),
+                        document.getElementById('progressStepSubtextModal'),
+                        document.getElementById('btnSubmitZipModal')
+                    );
+                });
+            }
+        });
+    </script>
 </x-app-layout>

@@ -264,52 +264,34 @@ class InstagramService
         // 3. Fetch/Generate Insights metrics
         $insights = $this->fetchAccountInsights($account, $rawPosts);
 
-        // Standardized data structures for frontend widgets
-        $trendLabels = $insights['chart_labels'] ?? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-        $trendData = $insights['chart_reach'] ?? [12000, 15000, 14000, 22000, 26000, 21000, 24000];
+        $existingInsights = $account->insights_data ?? [];
 
-        $insightsData = [
-            'female_pct'       => $insights['female_pct'] ?? '58.2%',
-            'male_pct'         => $insights['male_pct'] ?? '41.8%',
-            'other_pct'        => $insights['other_pct'] ?? '0.0%',
-            'top_age_bracket'  => $insights['top_age_bracket'] ?? '18-24 Years',
-            'trend_labels'     => $trendLabels,
-            'trend_data'       => $trendData,
-            'age_groups'       => [
-                ['range' => '12-17', 'pct' => 5, 'active' => false],
-                ['range' => '18-24', 'pct' => 80, 'active' => true],
-                ['range' => '24-35', 'pct' => 10, 'active' => false],
-                ['range' => '35-44', 'pct' => 5, 'active' => false],
-                ['range' => '44-60', 'pct' => 0, 'active' => false],
-            ],
-            'countries'        => [
-                ['name' => 'Indonesia', 'count' => '120K', 'pct' => 75],
-                ['name' => 'Malaysia', 'count' => '24K', 'pct' => 15],
-                ['name' => 'Singapore', 'count' => '8K', 'pct' => 5],
-                ['name' => 'Other', 'count' => '8K', 'pct' => 5],
-            ],
-            'visitors_labels'  => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            'visitors_data'    => [4200, 4800, 4100, 5000, 4600, 4900],
-            'heatmap_days'     => ['Su', 'Mo', 'Tu', 'We', 'Th'],
-            'heatmap_hours'    => ['12', '13', '14', '15', '17', '18', '19', '20', '21'],
-            'heatmap_matrix'   => [
-                [2, 3, 2, 4, 3, 2, 4, 3, 2],
-                [1, 2, 3, 3, 4, 2, 3, 2, 1],
-                [2, 3, 4, 4, 5, 4, 3, 3, 2],
-                [3, 4, 3, 5, 4, 3, 4, 2, 1],
-                [2, 3, 4, 3, 4, 5, 4, 3, 2],
-            ],
-        ];
+        $insightsData = array_merge([
+            'female_pct'       => $insights['female_pct'] ?? '0.0%',
+            'male_pct'         => $insights['male_pct'] ?? '0.0%',
+            'other_pct'        => '0.0%',
+            'top_age_bracket'  => $insights['top_age_bracket'] ?? 'N/A',
+            'trend_labels'     => $insights['chart_labels'] ?? [],
+            'trend_data'       => $insights['chart_reach'] ?? [],
+            'age_groups'       => [],
+            'countries'        => [],
+            'cities'           => [],
+            'visitors_labels'  => [],
+            'visitors_data'    => [],
+            'heatmap_days'     => ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+            'heatmap_hours'    => ['00', '03', '06', '09', '12', '15', '18', '21'],
+            'heatmap_matrix'   => array_fill(0, 7, array_fill(0, 9, 0)),
+        ], $existingInsights);
 
         // 4. Update InstagramAccount record in PostgreSQL DB
         $account->update([
-            'followers_count' => (int)($insights['followers_count'] ?? 2850),
-            'follows_count'   => (int)($insights['follows_count'] ?? 412),
+            'followers_count' => (int)($insights['followers_count'] ?? $account->followers_count ?? 755),
+            'follows_count'   => (int)($insights['follows_count'] ?? $account->follows_count ?? 1204),
             'media_count'     => (int)($insights['media_count'] ?? count($rawPosts)),
-            'reach'           => (int)($insights['reach'] ?? 9840),
-            'impressions'     => (int)($insights['impressions'] ?? 14280),
-            'engagement_rate' => (string)($insights['engagement_rate'] ?? '4.85%'),
-            'profile_views'   => (int)($insights['profile_views'] ?? 1240),
+            'reach'           => (int)($insights['reach'] ?? $account->reach ?? 5996),
+            'impressions'     => (int)($insights['impressions'] ?? $account->impressions ?? 28892),
+            'engagement_rate' => (string)($insights['engagement_rate'] ?? $account->engagement_rate ?? '7.37%'),
+            'profile_views'   => (int)($insights['profile_views'] ?? $account->profile_views ?? 740),
             'is_live_api'     => $isLiveApi,
             'insights_data'   => $insightsData,
             'last_synced_at'  => now(),

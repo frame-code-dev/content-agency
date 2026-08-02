@@ -35,17 +35,17 @@
     <!-- Divider -->
     <div class="relative my-6">
         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-zinc-200"></div></div>
-        <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-3 text-zinc-400 font-semibold font-mono">Or Email Login</span></div>
+        <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-3 text-zinc-400 font-semibold font-mono">Or Username / Email Login</span></div>
     </div>
 
-    <!-- Optional Email/Password Login Form -->
+    <!-- Email or Username Login Form -->
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
+        <!-- Email Address or Username -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full rounded-[10px]" type="email" name="email" :value="old('email')" autocomplete="username" />
+            <x-input-label for="email" :value="__('Email or Username')" />
+            <x-text-input id="email" class="block mt-1 w-full rounded-[10px]" type="text" name="email" :value="old('email')" required autofocus autocomplete="username" placeholder="username or email@example.com" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -56,7 +56,9 @@
             <x-text-input id="password" class="block mt-1 w-full rounded-[10px]"
                             type="password"
                             name="password"
-                            autocomplete="current-password" />
+                            required
+                            autocomplete="current-password"
+                            placeholder="••••••••" />
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
@@ -70,11 +72,9 @@
         </div>
 
         <div class="flex items-center justify-between mt-6">
-            @if (Route::has('password.request'))
-                <a class="underline text-xs text-zinc-500 hover:text-zinc-900 rounded-[10px]" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <a class="underline text-xs text-zinc-500 hover:text-zinc-900 rounded-[10px]" href="{{ route('register') }}">
+                {{ __('Register account') }}
+            </a>
 
             <x-primary-button class="ms-3 bg-zinc-950 hover:bg-zinc-800 rounded-[10px]">
                 {{ __('Log in') }}

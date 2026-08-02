@@ -70,9 +70,14 @@
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
                 <h2 class="text-base font-bold font-heading text-slate-900">Live Content Assets Table</h2>
                 <span class="text-xs font-mono font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-xl border border-slate-200">
-                    {{ count($posts) }} Posts Ready
+                    {{ isset($postsPaginator) ? $postsPaginator->total() : count($posts) }} Posts Ready (5 per halaman)
                 </span>
             </div>
+
+            @php
+                $tableItems = isset($postsPaginator) && $postsPaginator->count() > 0 ? $postsPaginator : $posts;
+                $fallbackImg = 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?auto=format&fit=crop&w=600&q=80';
+            @endphp
 
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs border-collapse">
@@ -87,31 +92,35 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 font-semibold text-slate-700">
-                        @forelse($posts as $post)
+                        @forelse($tableItems as $postItem)
+                            @php
+                                $pId = is_array($postItem) ? ($postItem['id'] ?? '') : ($postItem->instagram_post_id ?? $postItem->id);
+                                $pCap = is_array($postItem) ? ($postItem['caption'] ?? '') : ($postItem->caption ?? '');
+                                $pType = is_array($postItem) ? ($postItem['media_type'] ?? '') : ($postItem->media_type ?? '');
+                                $pUrl = is_array($postItem) ? ($postItem['media_url'] ?? '') : ($postItem->media_url ?? '');
+                                $pLikes = is_array($postItem) ? ($postItem['like_count'] ?? 0) : ($postItem->like_count ?? 0);
+                                $pComments = is_array($postItem) ? ($postItem['comments_count'] ?? 0) : ($postItem->comments_count ?? 0);
+                            @endphp
                             <tr class="hover:bg-slate-50/80 transition">
                                 <td class="py-3.5 px-4 w-16">
-                                    @if(isset($post['media_url']) && !empty($post['media_url']))
-                                        <img src="{{ $post['media_url'] }}" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shadow-sm" alt="Post">
-                                    @else
-                                        <div class="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-xs text-slate-500 font-mono">IG</div>
-                                    @endif
+                                    <img src="{{ !empty($pUrl) ? $pUrl : $fallbackImg }}" class="w-12 h-12 rounded-xl object-cover ring-1 ring-slate-200 shadow-sm" alt="Post Media" onerror="this.onerror=null; this.src='{{ $fallbackImg }}';">
                                 </td>
-                                <td class="py-3.5 px-4 max-w-sm truncate text-slate-900 font-medium">{{ $post['caption'] ?? 'No caption' }}</td>
+                                <td class="py-3.5 px-4 max-w-sm truncate text-slate-900 font-medium">{{ !empty($pCap) ? $pCap : 'No caption' }}</td>
                                 <td class="py-3.5 px-4">
                                     <span class="px-2.5 py-1 rounded-xl text-[10px] font-bold font-mono uppercase bg-slate-100 text-slate-700 border border-slate-200">
-                                        {{ $post['media_type'] ?? 'IMAGE' }}
+                                        {{ !empty($pType) ? $pType : 'IMAGE' }}
                                     </span>
                                 </td>
-                                <td class="py-3.5 px-4 text-slate-900 font-bold font-mono">❤️ {{ number_format($post['like_count'] ?? 0) }}</td>
-                                <td class="py-3.5 px-4 text-slate-900 font-bold font-mono">💬 {{ number_format($post['comments_count'] ?? 0) }}</td>
+                                <td class="py-3.5 px-4 text-slate-900 font-bold font-mono">❤️ {{ number_format($pLikes) }}</td>
+                                <td class="py-3.5 px-4 text-slate-900 font-bold font-mono">💬 {{ number_format($pComments) }}</td>
                                 <td class="py-3.5 px-4 text-right">
                                     <form action="{{ route('analysis.process') }}" method="POST" class="inline">
                                         @csrf
-                                        <input type="hidden" name="post_id" value="{{ $post['id'] }}">
-                                        <input type="hidden" name="caption" value="{{ $post['caption'] ?? '' }}">
-                                        <input type="hidden" name="media_url" value="{{ $post['media_url'] ?? '' }}">
-                                        <input type="hidden" name="likes" value="{{ $post['like_count'] ?? 0 }}">
-                                        <input type="hidden" name="comments" value="{{ $post['comments_count'] ?? 0 }}">
+                                        <input type="hidden" name="post_id" value="{{ $pId }}">
+                                        <input type="hidden" name="caption" value="{{ $pCap }}">
+                                        <input type="hidden" name="media_url" value="{{ $pUrl }}">
+                                        <input type="hidden" name="likes" value="{{ $pLikes }}">
+                                        <input type="hidden" name="comments" value="{{ $pComments }}">
                                         <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold shadow-sm transition font-mono">
                                             Run AI Audit &rarr;
                                         </button>
@@ -126,6 +135,12 @@
                     </tbody>
                 </table>
             </div>
+
+            @if(isset($postsPaginator) && $postsPaginator->hasPages())
+                <div class="mt-6 pt-4 border-t border-slate-100">
+                    {{ $postsPaginator->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

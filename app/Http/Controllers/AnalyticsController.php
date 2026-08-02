@@ -23,10 +23,11 @@ class AnalyticsController extends Controller
         $user = auth()->user();
         $account = $user ? $user->instagramAccount : null;
         $posts = $account ? $this->instagramService->fetchUserPosts($account) : [];
+        $postsPaginator = $account ? $account->posts()->orderBy('posted_at', 'desc')->paginate(10) : null;
         $insights = $account ? $this->instagramService->fetchAccountInsights($account, $posts) : [];
         $contentPlans = ContentPlan::where('user_id', $user->id ?? 1)->orderBy('created_at', 'desc')->get();
 
-        return view('analytics.content', compact('user', 'account', 'posts', 'insights', 'contentPlans'));
+        return view('analytics.content', compact('user', 'account', 'posts', 'postsPaginator', 'insights', 'contentPlans'));
     }
 
     public function engagementAnalytics()

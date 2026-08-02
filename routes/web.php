@@ -47,9 +47,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/competitors/auto-hermes', [CompetitorController::class, 'autoGenerateHermes'])->name('competitors.auto-hermes');
     Route::delete('/competitors/{competitor}', [CompetitorController::class, 'destroy'])->name('competitors.destroy');
 
-    // Instagram Disconnect & Sync
+    // Instagram Disconnect, Sync, & Import JSON/ZIP Export (Single File & Chunked Upload)
     Route::post('/auth/instagram/sync', [InstagramController::class, 'sync'])->name('instagram.sync');
     Route::post('/auth/instagram/disconnect', [InstagramController::class, 'disconnect'])->name('instagram.disconnect');
+    Route::post('/auth/instagram/import-zip', [InstagramController::class, 'importZip'])->name('instagram.import-zip');
+    Route::post('/auth/instagram/upload-chunk', [InstagramController::class, 'uploadChunk'])->name('instagram.upload-chunk');
 
     // AI Analysis (Single Post & Overall Portfolio Audit)
     Route::post('/analysis', [AnalysisController::class, 'analyze'])->name('analysis.process');

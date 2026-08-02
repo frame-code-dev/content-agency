@@ -24,21 +24,37 @@ class DatabaseSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['email' => 'admin@agency.com'],
             [
-                'name' => 'Isabella White',
+                'name'     => 'Isabella White',
+                'username' => 'admin',
                 'password' => bcrypt('password'),
             ]
         );
+        $admin->update(['username' => 'admin']);
         $admin->assignRole($superAdminRole);
 
         // 3. Create Demo Client User
         $client = User::firstOrCreate(
             ['email' => 'client@agency.com'],
             [
-                'name' => 'Isabella White',
+                'name'     => 'Rifjan Jundila',
+                'username' => 'rifjanj',
                 'password' => bcrypt('password'),
             ]
         );
+        $client->update(['username' => 'rifjanj']);
         $client->assignRole($clientRole);
+
+        // 4. Create Test User
+        $testUser = User::firstOrCreate(
+            ['email' => 'test@agency.com'],
+            [
+                'name'     => 'Test Account',
+                'username' => 'test',
+                'password' => bcrypt('password'),
+            ]
+        );
+        $testUser->update(['username' => 'test']);
+        $testUser->assignRole($clientRole);
 
         // 4. Create Instagram Account for Demo User
         $account = InstagramAccount::firstOrCreate(
@@ -66,58 +82,58 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 5. Seed Content Plans
-        if (ContentPlan::count() === 0) {
-            ContentPlan::create([
-                'user_id'        => $admin->id,
-                'title'          => 'Q3 Product Teaser Showcase',
-                'topic'          => 'Product Launch',
-                'concept'        => 'High energy video showcasing key product benefits',
-                'caption'        => 'Discover the next evolution of AI content strategy! 🚀 #Launch',
-                'tone'           => 'professional',
-                'media_type'     => 'VIDEO',
-                'scheduled_at'   => now()->addDays(3),
-                'status'         => 'scheduled',
-                'spk_score'      => 92,
-                'priority_level' => 'Star Content',
-            ]);
+        // // 5. Seed Content Plans
+        // if (ContentPlan::count() === 0) {
+        //     ContentPlan::create([
+        //         'user_id'        => $admin->id,
+        //         'title'          => 'Q3 Product Teaser Showcase',
+        //         'topic'          => 'Product Launch',
+        //         'concept'        => 'High energy video showcasing key product benefits',
+        //         'caption'        => 'Discover the next evolution of AI content strategy! 🚀 #Launch',
+        //         'tone'           => 'professional',
+        //         'media_type'     => 'VIDEO',
+        //         'scheduled_at'   => now()->addDays(3),
+        //         'status'         => 'scheduled',
+        //         'spk_score'      => 92,
+        //         'priority_level' => 'Star Content',
+        //     ]);
 
-            ContentPlan::create([
-                'user_id'        => $admin->id,
-                'title'          => 'Customer Success Story Breakdown',
-                'topic'          => 'Case Study',
-                'concept'        => 'Carousel post with infographic metrics',
-                'caption'        => 'How Brand X achieved 300% growth using our AI agency workflow 📊',
-                'tone'           => 'informative',
-                'media_type'     => 'CAROUSEL_ALBUM',
-                'scheduled_at'   => now()->addDays(5),
-                'status'         => 'scheduled',
-                'spk_score'      => 88,
-                'priority_level' => 'Star Content',
-            ]);
-        }
+        //     ContentPlan::create([
+        //         'user_id'        => $admin->id,
+        //         'title'          => 'Customer Success Story Breakdown',
+        //         'topic'          => 'Case Study',
+        //         'concept'        => 'Carousel post with infographic metrics',
+        //         'caption'        => 'How Brand X achieved 300% growth using our AI agency workflow 📊',
+        //         'tone'           => 'informative',
+        //         'media_type'     => 'CAROUSEL_ALBUM',
+        //         'scheduled_at'   => now()->addDays(5),
+        //         'status'         => 'scheduled',
+        //         'spk_score'      => 88,
+        //         'priority_level' => 'Star Content',
+        //     ]);
+        // }
 
-        // 6. Seed Competitors
-        if (Competitor::count() === 0) {
-            Competitor::create([
-                'user_id'            => $admin->id,
-                'username'           => '@techpulse_agency',
-                'followers_count'    => 45200,
-                'engagement_rate'    => 5.40,
-                'avg_likes'          => 2100,
-                'avg_comments'       => 180,
-                'gap_analysis_notes' => 'High frequency video content; low response rate on comments.',
-            ]);
+        // // 6. Seed Competitors
+        // if (Competitor::count() === 0) {
+        //     Competitor::create([
+        //         'user_id'            => $admin->id,
+        //         'username'           => '@techpulse_agency',
+        //         'followers_count'    => 45200,
+        //         'engagement_rate'    => 5.40,
+        //         'avg_likes'          => 2100,
+        //         'avg_comments'       => 180,
+        //         'gap_analysis_notes' => 'High frequency video content; low response rate on comments.',
+        //     ]);
 
-            Competitor::create([
-                'user_id'            => $admin->id,
-                'username'           => '@creative_hub_id',
-                'followers_count'    => 62100,
-                'engagement_rate'    => 4.10,
-                'avg_likes'          => 2450,
-                'avg_comments'       => 120,
-                'gap_analysis_notes' => 'Strong graphic carousel design, missing reel video optimization.',
-            ]);
-        }
+        //     Competitor::create([
+        //         'user_id'            => $admin->id,
+        //         'username'           => '@creative_hub_id',
+        //         'followers_count'    => 62100,
+        //         'engagement_rate'    => 4.10,
+        //         'avg_likes'          => 2450,
+        //         'avg_comments'       => 120,
+        //         'gap_analysis_notes' => 'Strong graphic carousel design, missing reel video optimization.',
+        //     ]);
+        // }
     }
 }

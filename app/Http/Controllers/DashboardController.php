@@ -30,6 +30,7 @@ class DashboardController extends Controller
         $account = $user->instagramAccount;
 
         $posts = [];
+        $postsPaginator = null;
         $insights = [];
         $error = null;
 
@@ -39,33 +40,8 @@ class DashboardController extends Controller
                 if (!$account->last_synced_at || $account->posts()->count() === 0) {
                     $syncedData = $this->instagramService->syncAccountData($account);
                     $account = $syncedData['account'];
-                    $posts = $account->posts()->orderBy('posted_at', 'desc')->get()->map(function ($p) {
-                        return [
-                            'id' => $p->instagram_post_id,
-                            'caption' => $p->caption,
-                            'media_type' => $p->media_type,
-                            'media_url' => $p->media_url,
-                            'permalink' => $p->permalink,
-                            'like_count' => $p->like_count,
-                            'comments_count' => $p->comments_count,
-                            'timestamp' => $p->posted_at ? $p->posted_at->toIso8601String() : null,
-                        ];
-                    })->toArray();
                     $insights = $syncedData['insights'];
                 } else {
-                    $posts = $account->posts()->orderBy('posted_at', 'desc')->get()->map(function ($p) {
-                        return [
-                            'id' => $p->instagram_post_id,
-                            'caption' => $p->caption,
-                            'media_type' => $p->media_type,
-                            'media_url' => $p->media_url,
-                            'permalink' => $p->permalink,
-                            'like_count' => $p->like_count,
-                            'comments_count' => $p->comments_count,
-                            'timestamp' => $p->posted_at ? $p->posted_at->toIso8601String() : null,
-                        ];
-                    })->toArray();
-
                     $insightsData = $account->insights_data ?? [];
                     $insights = array_merge([
                         'followers_count' => $account->followers_count,
@@ -79,6 +55,21 @@ class DashboardController extends Controller
                         'last_synced_at'  => $account->last_synced_at,
                     ], $insightsData);
                 }
+
+                $postsPaginator = $account->posts()->orderBy('posted_at', 'desc')->paginate(10);
+                $posts = $account->posts()->orderBy('posted_at', 'desc')->get()->map(function ($p) {
+                    return [
+                        'id' => $p->instagram_post_id,
+                        'caption' => $p->caption,
+                        'media_type' => $p->media_type,
+                        'media_url' => $p->media_url,
+                        'permalink' => $p->permalink,
+                        'like_count' => $p->like_count,
+                        'comments_count' => $p->comments_count,
+                        'timestamp' => $p->posted_at ? $p->posted_at->toIso8601String() : null,
+                    ];
+                })->toArray();
+
             } catch (Exception $e) {
                 $error = $e->getMessage();
             }
@@ -102,6 +93,7 @@ class DashboardController extends Controller
             'userRole',
             'account',
             'posts',
+            'postsPaginator',
             'insights',
             'contentPlansCount',
             'scheduledPlansCount',
